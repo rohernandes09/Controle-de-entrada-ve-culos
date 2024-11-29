@@ -11,7 +11,7 @@ function registrarEntrada() {
     const empresa = document.getElementById('empresaEntrada').value;
 
     if (!validarPlaca(placa)) {
-        alert('Placa inválida! Por favor, insira uma placa no formato brasileiro.');
+        alert('Placa inválida! Por favor, insira uma placa no formato correto.');
         return;
     }
 
@@ -43,7 +43,7 @@ function registrarSaida() {
     const empresa = document.getElementById('empresaSaida').value;
 
     if (!validarPlaca(placa)) {
-        alert('Placa inválida! Por favor, insira uma placa no formato brasileiro.');
+        alert('Placa inválida! Por favor, insira uma placa no formato correto.');
         return;
     }
 
@@ -69,14 +69,14 @@ function registrarSaida() {
 }
 
 function baixarPlanilha() {
-    let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "Tipo,Placa do Carro,Hora,Motorista,Empresa\n";
+    const wb = XLSX.utils.book_new();
+    const ws_data = [["Tipo", "Placa do Carro", "Hora", "Motorista", "Empresa"]];
 
     const entradas = document.querySelectorAll("#tabelaEntradas tr");
     entradas.forEach(row => {
         const cols = row.querySelectorAll("td");
         if (cols.length > 0) {
-            csvContent += `Entrada,${cols[0].textContent},${cols[1].textContent},${cols[2].textContent},${cols[3].textContent}\n`;
+            ws_data.push(["Entrada", cols[0].textContent, cols[1].textContent, cols[2].textContent, cols[3].textContent]);
         }
     });
 
@@ -84,15 +84,12 @@ function baixarPlanilha() {
     saidas.forEach(row => {
         const cols = row.querySelectorAll("td");
         if (cols.length > 0) {
-            csvContent += `Saída,${cols[0].textContent},${cols[1].textContent},${cols[2].textContent},${cols[3].textContent}\n`;
+            ws_data.push(["Saída", cols[0].textContent, cols[1].textContent, cols[2].textContent, cols[3].textContent]);
         }
     });
 
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "planilha_controle.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const ws = XLSX.utils.aoa_to_sheet(ws_data);
+    XLSX.utils.book_append_sheet(wb, ws, "Diário de Veículos");
+
+    XLSX.writeFile(wb, "diario_de_veiculos.xlsx");
 }
