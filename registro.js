@@ -15,6 +15,11 @@ function registrarEntrada() {
         return;
     }
 
+    if (!horaEntrada || !motorista || !empresa) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+    }
+
     const tabela = document.getElementById('tabelaEntradas');
     const novaLinha = tabela.insertRow();
 
@@ -39,6 +44,11 @@ function registrarSaida() {
 
     if (!validarPlaca(placa)) {
         alert('Placa inválida! Por favor, insira uma placa no formato brasileiro.');
+        return;
+    }
+
+    if (!horaSaida || !motorista || !empresa) {
+        alert('Por favor, preencha todos os campos.');
         return;
     }
 
