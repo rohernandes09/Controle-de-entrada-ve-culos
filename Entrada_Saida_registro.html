@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Veículos</title>
+    <link rel="icon" href="imagens/icone.png" type="image/png"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border-top: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>
+        <img src="imagens/logo.png" alt="Ícone" style="width: 100px; height: 100px;">
+        Registro de Veículos
+    </h1>
+
+    <div>
+        <button onclick="openTab('Entrada')">Entrada</button>
+        <button onclick="openTab('Saida')">Saída</button>
+        <button onclick="openTab('Consolidado')">Consolidado</button>
+    </div>
+
+    <div id="Entrada" class="tabcontent">
+        <h2>Registro de Entrada de Veículos</h2>
+        <form id="registroEntradaForm">
+            <label for="placaEntrada">Placa do Carro:</label>
+            <input type="text" id="placaEntrada" required><br><br>
+            <label for="horaEntrada">Hora de Entrada:</label>
+            <input type="time" id="horaEntrada" required><br><br>
+            <label for="motoristaEntrada">Motorista:</label>
+            <input type="text" id="motoristaEntrada" required><br><br>
+            <label for="empresaEntrada">Empresa:</label>
+            <input type="text" id="empresaEntrada" required><br><br>
+            <button type="button" onclick="registrarEntrada()">Registrar Entrada</button>
+        </form>
+        <h2>Entradas Registradas</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Placa do Carro</th>
+                    <th>Hora de Entrada</th>
+                    <th>Motorista</th>
+                    <th>Empresa</th>
+                </tr>
+            </thead>
+            <tbody id="tabelaEntradas">
+            </tbody>
+        </table>
+    </div>
+
+    <div id="Saida" class="tabcontent">
+        <h2>Registro de Saída de Veículos</h2>
+        <form id="registroSaidaForm">
+            <label for="placaSaida">Placa do Carro:</label>
+            <input type="text" id="placaSaida" required><br><br>
+            <label for="horaSaida">Hora de Saída:</label>
+            <input type="time" id="horaSaida" required><br><br>
+            <label for="motoristaSaida">Motorista:</label>
+            <input type="text" id="motoristaSaida" required><br><br>
+            <label for="empresaSaida">Empresa:</label>
+            <input type="text" id="empresaSaida" required><br><br>
+            <button type="button" onclick="registrarSaida()">Registrar Saída</button>
+        </form>
+        <h2>Saídas Registradas</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Placa do Carro</th>
+                    <th>Hora de Saída</th>
+                    <th>Motorista</th>
+                    <th>Empresa</th>
+                </tr>
+            </thead>
+            <tbody id="tabelaSaidas">
+            </tbody>
+        </table>
+    </div>
+
+    <div id="Consolidado" class="tabcontent">
+        <h2>Registro Consolidado de Veículos</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Placa do Carro</th>
+                    <th>Hora</th>
+                    <th>Motorista</th>
+                    <th>Empresa</th>
+                </tr>
+            </thead>
+            <tbody id="tabelaConsolidada">
+            </tbody>
+        </table>
+    </div>
+
+    <button onclick="baixarPlanilha()">Baixar Planilha</button>
+
+    <script>
+        function openTab(tabName) {
+            var i, tabcontent;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            document.getElementById(tabName).style.display = "block";
+        }
+
+        function carregarDados() {
+            const tabelaConsolidada = document.getElementById('tabelaConsolidada');
+
+            const entradas = JSON.parse(localStorage.getItem('entradas')) || [];
+            const saidas = JSON.parse(localStorage.getItem('saidas')) || [];
+
+            entradas.forEach(entrada => {
+                const novaLinha = tabelaConsolidada.insertRow();
+                novaLinha.insertCell(0).textContent = 'Entrada';
+                novaLinha.insertCell(1).textContent = entrada.placa;
+                novaLinha.insertCell(2).textContent = entrada.hora;
+                novaLinha.insertCell(3).textContent = entrada.motorista;
+                novaLinha.insertCell(4).textContent = entrada.empresa;
+            });
+
+            saidas.forEach(saida => {
+                const novaLinha = tabelaConsolidada.insertRow();
+                novaLinha.insertCell(0).textContent = 'Saída';
+                novaLinha.insertCell(1).textContent = saida.placa;
+                novaLinha.insertCell(2).textContent = saida.hora;
+                novaLinha.insertCell(3).textContent = saida.motorista;
+                novaLinha.insertCell(4).textContent = saida.empresa;
+            });
+        }
+
+        window.onload = function() {
+            openTab('Entrada');
+            carregarDados();
+        };
+    </script>
+    <script src="registro.js"></script>
+</body>
+</html>

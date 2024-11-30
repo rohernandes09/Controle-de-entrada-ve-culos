@@ -33,6 +33,10 @@ function registrarEntrada() {
     celulaMotorista.textContent = motorista;
     celulaEmpresa.textContent = empresa;
 
+    const entradas = JSON.parse(localStorage.getItem('entradas')) || [];
+    entradas.push({ placa, hora: horaEntrada, motorista, empresa });
+    localStorage.setItem('entradas', JSON.stringify(entradas));
+
     document.getElementById('registroEntradaForm').reset();
 }
 
@@ -65,27 +69,51 @@ function registrarSaida() {
     celulaMotorista.textContent = motorista;
     celulaEmpresa.textContent = empresa;
 
+    const saidas = JSON.parse(localStorage.getItem('saidas')) || [];
+    saidas.push({ placa, hora: horaSaida, motorista, empresa });
+    localStorage.setItem('saidas', JSON.stringify(saidas));
+
     document.getElementById('registroSaidaForm').reset();
+}
+
+function carregarDados() {
+    const tabelaConsolidada = document.getElementById('tabelaConsolidada');
+
+    const entradas = JSON.parse(localStorage.getItem('entradas')) || [];
+    const saidas = JSON.parse(localStorage.getItem('saidas')) || [];
+
+    entradas.forEach(entrada => {
+        const novaLinha = tabelaConsolidada.insertRow();
+        novaLinha.insertCell(0).textContent = 'Entrada';
+        novaLinha.insertCell(1).textContent = entrada.placa;
+        novaLinha.insertCell(2).textContent = entrada.hora;
+        novaLinha.insertCell(3).textContent = entrada.motorista;
+        novaLinha.insertCell(4).textContent = entrada.empresa;
+    });
+
+    saidas.forEach(saida => {
+        const novaLinha = tabelaConsolidada.insertRow();
+        novaLinha.insertCell(0).textContent = 'Saída';
+        novaLinha.insertCell(1).textContent = saida.placa;
+        novaLinha.insertCell(2).textContent = saida.hora;
+        novaLinha.insertCell(3).textContent = saida.motorista;
+        novaLinha.insertCell(4).textContent = saida.empresa;
+    });
 }
 
 function baixarPlanilha() {
     const wb = XLSX.utils.book_new();
     const ws_data = [["Tipo", "Placa do Carro", "Hora", "Motorista", "Empresa"]];
 
-    const entradas = document.querySelectorAll("#tabelaEntradas tr");
-    entradas.forEach(row => {
-        const cols = row.querySelectorAll("td");
-        if (cols.length > 0) {
-            ws_data.push(["Entrada", cols[0].textContent, cols[1].textContent, cols[2].textContent, cols[3].textContent]);
-        }
+    const entradas = JSON.parse(localStorage.getItem('entradas')) || [];
+    const saidas = JSON.parse(localStorage.getItem('saidas')) || [];
+
+    entradas.forEach(entrada => {
+        ws_data.push(["Entrada", entrada.placa, entrada.hora, entrada.motorista, entrada.empresa]);
     });
 
-    const saidas = document.querySelectorAll("#tabelaSaidas tr");
-    saidas.forEach(row => {
-        const cols = row.querySelectorAll("td");
-        if (cols.length > 0) {
-            ws_data.push(["Saída", cols[0].textContent, cols[1].textContent, cols[2].textContent, cols[3].textContent]);
-        }
+    saidas.forEach(saida => {
+        ws_data.push(["Saída", saida.placa, saida.hora, saida.motorista, saida.empresa]);
     });
 
     const ws = XLSX.utils.aoa_to_sheet(ws_data);
@@ -93,3 +121,7 @@ function baixarPlanilha() {
 
     XLSX.writeFile(wb, "diario_de_veiculos.xlsx");
 }
+
+window.onload = function() {
+    carregarDados();
+};
