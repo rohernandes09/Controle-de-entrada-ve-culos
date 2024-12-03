@@ -4,114 +4,136 @@
     <meta charset="UTF-8">
     <title>Registro de Veículos</title>
     <link rel="icon" href="imagens/icone.png" type="image/png"/>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
         }
         .tabcontent {
             display: none;
-            padding: 6px 12px;
+            padding: 20px;
             border-top: none;
         }
         table {
             width: 100%;
             border-collapse: collapse;
         }
-        table, th, td {
-            border: 1px solid black;
-        }
         th, td {
-            padding: 8px;
+            padding: 12px;
             text-align: left;
+        }
+        .btn-custom {
+            margin: 5px;
         }
     </style>
 </head>
 <body>
-    <h1>
-        <img src="imagens/logo.png" alt="Ícone" style="width: 100px; height: 100px;">
-        Registro de Veículos
-    </h1>
+    <div class="container mt-5">
+        <h1 class="text-center">
+            <img src="imagens/logo.png" alt="Ícone" style="width: 100px; height: 100px;">
+            Registro de Veículos
+        </h1>
 
-    <div>
-        <button onclick="openTab('Entrada')">Entrada</button>
-        <button onclick="openTab('Saida')">Saída</button>
-        <button onclick="openTab('Consolidado')">Consolidado</button>
+        <div class="text-center my-4">
+            <button class="btn btn-primary btn-custom" onclick="openTab('Entrada')">Entrada</button>
+            <button class="btn btn-primary btn-custom" onclick="openTab('Saida')">Saída</button>
+            <button class="btn btn-primary btn-custom" onclick="openTab('Consolidado')">Consolidado</button>
+        </div>
+
+        <div id="Entrada" class="tabcontent">
+            <h2>Registro de Entrada de Veículos</h2>
+            <form id="registroEntradaForm">
+                <div class="form-group">
+                    <label for="placaEntrada">Placa do Carro:</label>
+                    <input type="text" class="form-control" id="placaEntrada" required>
+                </div>
+                <div class="form-group">
+                    <label for="horaEntrada">Hora de Entrada:</label>
+                    <input type="time" class="form-control" id="horaEntrada" required>
+                </div>
+                <div class="form-group">
+                    <label for="motoristaEntrada">Motorista:</label>
+                    <input type="text" class="form-control" id="motoristaEntrada" required>
+                </div>
+                <div class="form-group">
+                    <label for="empresaEntrada">Empresa:</label>
+                    <input type="text" class="form-control" id="empresaEntrada" required>
+                </div>
+                <button type="button" class="btn btn-success" onclick="registrarEntrada()">Registrar Entrada</button>
+            </form>
+            <h2 class="mt-4">Entradas Registradas</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Placa do Carro</th>
+                        <th>Hora de Entrada</th>
+                        <th>Motorista</th>
+                        <th>Empresa</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaEntradas">
+                </tbody>
+            </table>
+        </div>
+
+        <div id="Saida" class="tabcontent">
+            <h2>Registro de Saída de Veículos</h2>
+            <form id="registroSaidaForm">
+                <div class="form-group">
+                    <label for="placaSaida">Placa do Carro:</label>
+                    <input type="text" class="form-control" id="placaSaida" required>
+                </div>
+                <div class="form-group">
+                    <label for="horaSaida">Hora de Saída:</label>
+                    <input type="time" class="form-control" id="horaSaida" required>
+                </div>
+                <div class="form-group">
+                    <label for="motoristaSaida">Motorista:</label>
+                    <input type="text" class="form-control" id="motoristaSaida" required>
+                </div>
+                <div class="form-group">
+                    <label for="empresaSaida">Empresa:</label>
+                    <input type="text" class="form-control" id="empresaSaida" required>
+                </div>
+                <button type="button" class="btn btn-success" onclick="registrarSaida()">Registrar Saída</button>
+            </form>
+            <h2 class="mt-4">Saídas Registradas</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Placa do Carro</th>
+                        <th>Hora de Saída</th>
+                        <th>Motorista</th>
+                        <th>Empresa</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaSaidas">
+                </tbody>
+            </table>
+        </div>
+
+        <div id="Consolidado" class="tabcontent">
+            <h2>Registro Consolidado de Veículos</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Placa do Carro</th>
+                        <th>Hora</th>
+                        <th>Motorista</th>
+                        <th>Empresa</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaConsolidada">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-center my-4">
+            <button class="btn btn-info" onclick="baixarPlanilha()">Baixar Planilha</button>
+        </div>
     </div>
-
-    <div id="Entrada" class="tabcontent">
-        <h2>Registro de Entrada de Veículos</h2>
-        <form id="registroEntradaForm">
-            <label for="placaEntrada">Placa do Carro:</label>
-            <input type="text" id="placaEntrada" required><br><br>
-            <label for="horaEntrada">Hora de Entrada:</label>
-            <input type="time" id="horaEntrada" required><br><br>
-            <label for="motoristaEntrada">Motorista:</label>
-            <input type="text" id="motoristaEntrada" required><br><br>
-            <label for="empresaEntrada">Empresa:</label>
-            <input type="text" id="empresaEntrada" required><br><br>
-            <button type="button" onclick="registrarEntrada()">Registrar Entrada</button>
-        </form>
-        <h2>Entradas Registradas</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Placa do Carro</th>
-                    <th>Hora de Entrada</th>
-                    <th>Motorista</th>
-                    <th>Empresa</th>
-                </tr>
-            </thead>
-            <tbody id="tabelaEntradas">
-            </tbody>
-        </table>
-    </div>
-
-    <div id="Saida" class="tabcontent">
-        <h2>Registro de Saída de Veículos</h2>
-        <form id="registroSaidaForm">
-            <label for="placaSaida">Placa do Carro:</label>
-            <input type="text" id="placaSaida" required><br><br>
-            <label for="horaSaida">Hora de Saída:</label>
-            <input type="time" id="horaSaida" required><br><br>
-            <label for="motoristaSaida">Motorista:</label>
-            <input type="text" id="motoristaSaida" required><br><br>
-            <label for="empresaSaida">Empresa:</label>
-            <input type="text" id="empresaSaida" required><br><br>
-            <button type="button" onclick="registrarSaida()">Registrar Saída</button>
-        </form>
-        <h2>Saídas Registradas</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Placa do Carro</th>
-                    <th>Hora de Saída</th>
-                    <th>Motorista</th>
-                    <th>Empresa</th>
-                </tr>
-            </thead>
-            <tbody id="tabelaSaidas">
-            </tbody>
-        </table>
-    </div>
-
-    <div id="Consolidado" class="tabcontent">
-        <h2>Registro Consolidado de Veículos</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Tipo</th>
-                    <th>Placa do Carro</th>
-                    <th>Hora</th>
-                    <th>Motorista</th>
-                    <th>Empresa</th>
-                </tr>
-            </thead>
-            <tbody id="tabelaConsolidada">
-            </tbody>
-        </table>
-    </div>
-
-    <button onclick="baixarPlanilha()">Baixar Planilha</button>
 
     <script>
         function openTab(tabName) {
@@ -153,7 +175,7 @@
             carregarDados();
         };
     </script>
-    <script src="xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <script src="registro.js"></script>
 </body>
 </html>
