@@ -1,2 +1,3 @@
 # Controle-de-entrada-ve-culos
-Passos inicias de um programa de entrada e saída de veículos 
+Esse codigo visa criar um programa para controle de uma portaria de empresa 
+
