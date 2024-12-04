@@ -49,6 +49,10 @@
                     <input type="text" class="form-control" id="placaEntrada" required>
                 </div>
                 <div class="form-group">
+                    <label for="dataEntrada">Data de Entrada:</label>
+                    <input type="date" class="form-control" id="dataEntrada" required>
+                </div>
+                <div class="form-group">
                     <label for="horaEntrada">Hora de Entrada:</label>
                     <input type="time" class="form-control" id="horaEntrada" required>
                 </div>
@@ -67,6 +71,7 @@
                 <thead>
                     <tr>
                         <th>Placa do Carro</th>
+                        <th>Data de Entrada</th>
                         <th>Hora de Entrada</th>
                         <th>Motorista</th>
                         <th>Empresa</th>
@@ -83,6 +88,10 @@
                 <div class="form-group">
                     <label for="placaSaida">Placa do Carro:</label>
                     <input type="text" class="form-control" id="placaSaida" required>
+                </div>
+                <div class="form-group">
+                    <label for="dataSaida">Data de Saída:</label>
+                    <input type="date" class="form-control" id="dataSaida" required>
                 </div>
                 <div class="form-group">
                     <label for="horaSaida">Hora de Saída:</label>
@@ -103,6 +112,7 @@
                 <thead>
                     <tr>
                         <th>Placa do Carro</th>
+                        <th>Data de Saída</th>
                         <th>Hora de Saída</th>
                         <th>Motorista</th>
                         <th>Empresa</th>
@@ -120,6 +130,7 @@
                     <tr>
                         <th>Tipo</th>
                         <th>Placa do Carro</th>
+                        <th>Data</th>
                         <th>Hora</th>
                         <th>Motorista</th>
                         <th>Empresa</th>
@@ -128,10 +139,9 @@
                 <tbody id="tabelaConsolidada">
                 </tbody>
             </table>
-        </div>
-
-        <div class="text-center my-4">
-            <button class="btn btn-info" onclick="baixarPlanilha()">Baixar Planilha</button>
+            <div class="text-center my-4">
+                <button class="btn btn-info" onclick="baixarPlanilha()">Salvar Planilha</button>
+            </div>
         </div>
     </div>
 
@@ -147,6 +157,7 @@
 
         function carregarDados() {
             const tabelaConsolidada = document.getElementById('tabelaConsolidada');
+            tabelaConsolidada.innerHTML = ''; // Limpa a tabela antes de recarregar os dados
 
             const entradas = JSON.parse(localStorage.getItem('entradas')) || [];
             const saidas = JSON.parse(localStorage.getItem('saidas')) || [];
@@ -155,18 +166,20 @@
                 const novaLinha = tabelaConsolidada.insertRow();
                 novaLinha.insertCell(0).textContent = 'Entrada';
                 novaLinha.insertCell(1).textContent = entrada.placa;
-                novaLinha.insertCell(2).textContent = entrada.hora;
-                novaLinha.insertCell(3).textContent = entrada.motorista;
-                novaLinha.insertCell(4).textContent = entrada.empresa;
+                novaLinha.insertCell(2).textContent = entrada.data;
+                novaLinha.insertCell(3).textContent = entrada.hora;
+                novaLinha.insertCell(4).textContent = entrada.motorista;
+                novaLinha.insertCell(5).textContent = entrada.empresa;
             });
 
             saidas.forEach(saida => {
                 const novaLinha = tabelaConsolidada.insertRow();
                 novaLinha.insertCell(0).textContent = 'Saída';
                 novaLinha.insertCell(1).textContent = saida.placa;
-                novaLinha.insertCell(2).textContent = saida.hora;
-                novaLinha.insertCell(3).textContent = saida.motorista;
-                novaLinha.insertCell(4).textContent = saida.empresa;
+                novaLinha.insertCell(2).textContent = saida.data;
+                novaLinha.insertCell(3).textContent = saida.hora;
+                novaLinha.insertCell(4).textContent = saida.motorista;
+                novaLinha.insertCell(5).textContent = saida.empresa;
             });
         }
 
