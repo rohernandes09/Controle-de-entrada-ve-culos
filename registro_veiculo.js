@@ -7,10 +7,10 @@ document.getElementById('vehicleForm').addEventListener('submit', function(event
     const type = document.getElementById('type').value;
     const company = document.getElementById('company').value;
 
-    const platePattern = /^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/;
+    const platePattern = /^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/i;
 
     if (!platePattern.test(plate)) {
-        alert('Placa do veículo inválida. Formatos válidos: ABC1D23 ou ABC1234.');
+        alert('Placa do veículo inválida. Formatos válidos.');
         return;
     }
 
@@ -30,17 +30,21 @@ document.getElementById('vehicleForm').addEventListener('submit', function(event
 
     document.getElementById('vehicleForm').reset();
 
+    console.log('Registro adicionado, atualizando Excel...');
     updateExcel();
 });
 
 document.getElementById('downloadExcel').addEventListener('click', function() {
+    console.log('Botão de download clicado, atualizando Excel...');
     updateExcel(true);
 });
 
 function updateExcel(download = false) {
+    console.log('Atualizando Excel...');
     const table = document.getElementById('recordsTable');
     const workbook = XLSX.utils.table_to_book(table, {sheet: "Registros"});
     if (download) {
+        console.log('Baixando arquivo Excel...');
         XLSX.writeFile(workbook, 'registros_veiculos.xlsx');
     }
 }

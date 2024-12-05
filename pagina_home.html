@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial</title>
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="IMAGENS/icone.png" type="image/png">
+    <style>
+        body {
+            background: white; /* Fundo branco */
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .logo {
+            width: 300px;
+            height: 300px;
+            background: url('IMAGENS/LapaVermelha_vs_Principal_Cor.jpg') no-repeat center center;
+            background-size: contain;
+            margin-bottom: 20px;
+        }
+        h1 {
+            margin-bottom: 40px;
+            color: #333; /* Cor do texto */
+        }
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s, opacity 0.3s;
+        }
+        .btn-pessoas {
+            background-color: #ff0000; /* Cor azul */
+        }
+        .btn-veiculos {
+            background-color: #ff0000; /* Cor verde */
+        }
+        .btn:hover {
+            opacity: 0.8; /* Clareia o botão */
+        }
+    </style>
+</head>
+<body>
+    <div class="logo"></div>
+    <h1>Bem-vindo ao Sistema de Controle de Acessos</h1>
+    <div class="btn-container">
+        <button class="btn btn-pessoas" onclick="navigateTo('Entrada_saida_pessoas.html')">Cadastrar Pessoas</button>
+        <button class="btn btn-veiculos" onclick="navigateTo('Entrada_Saida_registro.html')">Cadastrar Veículos</button>
+    </div>
+    <script>
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+    </script>
+</body>
+</html>
